@@ -13,4 +13,15 @@ defmodule Geo.Extent do
   def intersects?({_, _, _, maxY}, {_, minY, _, _}) when minY > maxY, do: false
   def intersects?({_, _, _, _}, {_, _, _, _}), do: true
 
+  @spec extend(t, t) :: t
+  def extend({minX1, minY1, maxX1, maxY1}, {minX2, minY2, maxX2, maxY2}) do
+    {
+      Kernel.min(minX1, minX2),
+      Kernel.min(minY1, minY2),
+      Kernel.max(maxX1, maxX2),
+      Kernel.max(maxY1, maxY2)
+    }
+  end
+
+
 end
