@@ -34,9 +34,8 @@ defmodule Geo.Extent do
   end
 
   @spec extendCoordinates(t, [{number, number}]) :: t
-  def extendCoordinates(extent, []), do: extent
-  def extendCoordinates(extent, [h|t]) do
-    extendCoordinates(extendCoordinate(extent, h), t)
+  def extendCoordinates(extent, list) do
+    Enum.reduce(list, extent, fn(coord, extend) -> extendCoordinate(extend, coord) end)
   end
 
 end
