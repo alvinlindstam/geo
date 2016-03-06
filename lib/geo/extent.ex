@@ -23,5 +23,20 @@ defmodule Geo.Extent do
     }
   end
 
+  @spec extendCoordinate(t, {number, number}) :: t
+  def extendCoordinate({minX, minY, maxX, maxY}, {coordX, coordY}) do
+    {
+      Kernel.min(minX, coordX),
+      Kernel.min(minY, coordY),
+      Kernel.max(maxX, coordX),
+      Kernel.max(maxY, coordY)
+    }
+  end
+
+  @spec extendCoordinates(t, [{number, number}]) :: t
+  def extendCoordinates(extent, []), do: extent
+  def extendCoordinates(extent, [h|t]) do
+    extendCoordinates(extendCoordinate(extent, h), t)
+  end
 
 end

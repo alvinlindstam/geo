@@ -43,4 +43,19 @@ defmodule Geo.Extent.Test do
     assert(Geo.Extent.extend(extent1, extent2) == {0, 0, 30, 60})
   end
 
+  test "Extend coordinate" do
+    extent = {0, 0, 5, 5}
+    assert(Geo.Extent.extendCoordinate(extent, {0, 10}) == {0, 0, 5, 10})
+    assert(Geo.Extent.extendCoordinate(extent, {10, 0}) == {0, 0, 10, 5})
+    assert(Geo.Extent.extendCoordinate(extent, {10, 10}) == {0, 0, 10, 10})
+    assert(Geo.Extent.extendCoordinate(extent, {0, -10}) == {0, -10, 5, 5})
+    assert(Geo.Extent.extendCoordinate(extent, {-10, 0}) == {-10, 0, 5, 5})
+    assert(Geo.Extent.extendCoordinate(extent, {-10, -10}) == {-10, -10, 5, 5})
+  end
+
+  test "Extend coordinates" do
+    extent = {0, 0, 5, 5}
+    assert(Geo.Extent.extendCoordinates(extent, [{0, 10}, {0, -15}, {20, 0}]) == {0, -15, 20, 10})
+  end
+
 end
