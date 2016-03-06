@@ -38,4 +38,13 @@ defmodule Geo.Extent do
     Enum.reduce(list, extent, fn(coord, extend) -> extendCoordinate(extend, coord) end)
   end
 
+  @spec fromCoordinate({number, number}) :: t
+  def fromCoordinate({x, y}), do: {x, y, x, y}
+
+  @spec fromCoordinates([{number, number}]) :: t
+  def fromCoordinates([h|t]) do
+    firstExtent = fromCoordinate(h)
+    extendCoordinates(firstExtent, t)
+  end
+
 end

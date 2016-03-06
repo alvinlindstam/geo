@@ -58,4 +58,8 @@ defmodule Geo.Extent.Test do
     assert(Geo.Extent.extendCoordinates(extent, [{0, 10}, {0, -15}, {20, 0}]) == {0, -15, 20, 10})
   end
 
+  test "From coordinates" do
+    assert(Geo.Extent.fromCoordinates([{0, 10}, {0, -15}, {20, 0}]) == {0, -15, 20, 10})
+  end
+
 end
