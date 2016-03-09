@@ -33,18 +33,35 @@ defmodule Geo.Extent do
     }
   end
 
-  @spec extendCoordinates(t, [{number, number}]) :: t
-  def extendCoordinates(extent, list) do
-    Enum.reduce(list, extent, fn(coord, extend) -> extendCoordinate(extend, coord) end)
+  @spec extendCoordinates(t, [[[{number, number}]]] | [[{number, number}]] | [{number, number}] | {number, number}) :: t
+  def extendCoordinates(extent, coordinates) do
+    reduceCoordinates(coordinates, extent)
   end
 
   @spec fromCoordinate({number, number}) :: t
   def fromCoordinate({x, y}), do: {x, y, x, y}
 
   @spec fromCoordinates([{number, number}]) :: t
-  def fromCoordinates([h|t]) do
-    firstExtent = fromCoordinate(h)
-    extendCoordinates(firstExtent, t)
+  def fromCoordinates(coordinates) do
+    extendCoordinates(Infinity, coordinates)
+  end
+
+  @spec fromGeo(Geo.geometry) :: t
+  def fromGeo(%{coordinates: coordinates}) do
+    fromCoordinates(coordinates)
+  end
+
+
+  defp reduceCoordinates(item, Infinity) when is_tuple(item) do
+    fromCoordinate(item)
+  end
+
+  defp reduceCoordinates(item, acc) when is_tuple(item) do
+    extendCoordinate(acc, item)
+  end
+
+  defp reduceCoordinates(item, acc) do
+    Enum.reduce(item, acc, fn(item, acc) -> reduceCoordinates(item, acc) end)
   end
 
 end

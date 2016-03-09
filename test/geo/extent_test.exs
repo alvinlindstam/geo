@@ -62,4 +62,19 @@ defmodule Geo.Extent.Test do
     assert(Geo.Extent.fromCoordinates([{0, 10}, {0, -15}, {20, 0}]) == {0, -15, 20, 10})
   end
 
+  test "From Point" do
+    geo = %Geo.Point{ coordinates: {5, 8}}
+    assert(Geo.Extent.fromGeo(geo) == {5, 8, 5, 8})
+  end
+
+  test "From LineString" do
+    geo = %Geo.LineString{ coordinates: [{5, 8}, {10, 3}]}
+    assert(Geo.Extent.fromGeo(geo) == {5, 3, 10, 8})
+  end
+
+  test "From MultiLineString" do
+    geo = %Geo.MultiLineString{ coordinates: [[{5, 8}, {10, 3}], [{20, -4}, {30, 0}]]}
+    assert(Geo.Extent.fromGeo(geo) == {5, -4, 30, 8})
+  end
+
 end
